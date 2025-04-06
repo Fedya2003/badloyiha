@@ -30,7 +30,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased `}
         >
           <ThemeProvider
             attribute="class"
@@ -40,7 +40,7 @@ export default function RootLayout({
           >
 
             <Navbar />
-            <main className="p-12">{children}</main>
+            <main className="p-12 h-full">{children}</main>
             <Footer />
           </ThemeProvider>
         </body>

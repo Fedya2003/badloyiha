@@ -2,6 +2,7 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import CarouselDApiDemo from "./components/Slider"
+import SearchBar from "./components/SearchBar"
 
 export default function Home() {
   const [totalBads, setTotalBads] = useState(0)  // Sayt statistikasi uchun BADlar soni
@@ -15,7 +16,7 @@ export default function Home() {
 
   return (
     <div>
-
+      <SearchBar />
       {/* "BAD nima?" degan savol va javob */}
       <div className="hero-section bg-blue-500 text-white p-12 text-center">
         <h1 className="text-4xl font-bold mb-4">BAD nima?</h1>
