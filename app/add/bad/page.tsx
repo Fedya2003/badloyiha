@@ -34,7 +34,16 @@ export default function AddBadPage() {
 
             if (res.ok) {
                 toast.success('BAD muvaffaqiyatli qo\'shildi!')
-                router.push('/bad') // BADlar ro'yxatiga qaytish
+
+                // Formani tozalash
+                setName('')
+                setDescription('')
+                setImage('')
+                setFirm('')
+                setCategory('')
+
+                // Sahifani yangilash
+                router.push('add/bad') // BADlar ro'yxatiga qaytish
             } else {
                 toast.error('Nimadir noto\'g\'ri ketdi. Iltimos, qaytadan urinib ko\'ring.')
             }

@@ -1,29 +1,27 @@
-import { Schema, model, models } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
-// BadType interfeysi
-interface BadType {
-	_id?: string;
+// TypeScript interfeysi uchun BadType yaratamiz
+export interface BadType extends Document {
 	name: string;
 	description: string;
 	image: string;
 	firm: string;
-	category: string; // Categoryni id orqali bog'lash
+	category: string;
 }
 
-const badSchema = new Schema<BadType>({
-	name: { type: String, required: true },
-	description: { type: String, required: true },
-	image: { type: String, required: true },
-	firm: { type: String, required: true },
-	category: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Category',
-		required: true,
-	}, // Categoryni ObjectId orqali bog'lash
-});
+// Schema yaratish
+const badSchema: Schema<BadType> = new mongoose.Schema(
+	{
+		name: { type: String, required: true },
+		description: { type: String, required: true },
+		image: { type: String, required: true },
+		firm: { type: String, required: true },
+		category: { type: String, required: true },
+	},
+	{ timestamps: true } // Yaratish va yangilanish vaqtlarini qo'shish
+);
 
-// MongoDB modelini yaratish
-const Bad = models.Bad || model<BadType>('Bad', badSchema);
+// Modelni yaratish
+const Bad = mongoose.models.Bad || mongoose.model<BadType>('Bad', badSchema);
 
 export default Bad;
-export type { BadType };
