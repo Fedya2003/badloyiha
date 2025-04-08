@@ -1,19 +1,12 @@
 import mongoose from 'mongoose';
 
-// MongoDB'ga ulanish uchun yordamchi funksiya
-const connectDB = async (): Promise<void> => {
+const connectToDatabase = async () => {
 	if (mongoose.connections[0].readyState) {
-		// Agar ulangan bo'lsa, qayta ulanishga hojat yo'q
+		console.log('Already connected to the database');
 		return;
 	}
-
-	try {
-		await mongoose.connect(process.env.MONGODB_URI as string);
-		console.log('MongoDB connected');
-	} catch (error) {
-		console.error('MongoDB connection error:', error);
-		process.exit(1);
-	}
+	await mongoose.connect(process.env.MONGODB_URI!); // MONGODB_URI o'zgaruvchisini .env faylida belgilanganligini tekshiring
+	console.log('Connected to the database');
 };
 
-export default connectDB;
+export default connectToDatabase;
