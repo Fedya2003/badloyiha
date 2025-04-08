@@ -1,18 +1,23 @@
-import { Schema, model, models } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
+import { BadType } from '@/models/bad'; // BadType import qilish
 
-// Category interfeysi
-interface CategoryType {
-	_id: string;
+// Category interfeýsini yangilash
+interface ICategory extends Document {
 	name: string;
+	bads: BadType[]; // `bads` maydoni BadType arrayi sifatida ko'rsatiladi
 }
 
-const categorySchema = new Schema<CategoryType>({
-	name: { type: String, required: true },
+const CategorySchema: Schema = new Schema<ICategory>({
+	name: {
+		type: String,
+		required: true,
+	},
+	bads: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Bad' }], // Badlar bilan bog'lanish
 });
 
-// MongoDB modelini yaratish
+// Category modelini yaratish
 const Category =
-	models.Category || model<CategoryType>('Category', categorySchema);
+	mongoose.models.Category ||
+	mongoose.model<ICategory>('Category', CategorySchema);
 
 export default Category;
-export type { CategoryType };

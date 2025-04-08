@@ -2,64 +2,57 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
-import { FirmType } from "@/models/firm" // Firma modelining interfeysi
 
-export default function AddFirmPage() {
+export default function AddCategoryPage() {
     const [name, setName] = useState("")
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        const firmData: FirmType = {
-            name,
-        }
+        const categoryData = { name }
 
         try {
-            const res = await fetch("/api/firms", {
+            const res = await fetch("/api/categories", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(firmData),
+                body: JSON.stringify(categoryData),
             })
 
             if (res.ok) {
-                toast.success("Firma muvaffaqiyatli qo'shildi!")
-                router.push("/firms") // Firma ro'yxatiga qaytish
+                toast.success("Kategoriya muvaffaqiyatli qo'shildi!")
+                router.push("/categories") // Kategoriyalar sahifasiga yo'naltirish
             } else {
-                toast.error("Nimadir noto'g'ri ketdi, qaytadan urinib ko'ring!")
+                toast.error("Nimadir noto'g'ri ketdi. Iltimos, qaytadan urinib ko'ring.")
             }
-        } catch (error: unknown) {
-            // Xatolikni qayta ishlash va log qilish
-            if (error instanceof Error) {
-                console.error("Firma qo'shishda xatolik:", error.message)
-            }
-            toast.error("Xatolik yuz berdi, qaytadan urinib ko'ring!")
+        } catch {
+            toast.error("Kategoriya qo'shishda xatolik yuz berdi.")
         }
     }
 
     return (
         <div className="container py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mx-auto p-6 bg-blue-500 shadow-xl rounded-lg border border-gray-200">
-                <h1 className="text-4xl font-bold text-center mb-8 text-white">Yangi Firma qo`shish</h1>
+            <div className="max-w-2xl mx-auto p-6 bg-green-500 shadow-xl rounded-lg border border-gray-200">
+                <h1 className="text-4xl font-bold text-center mb-8 text-white">Yangi Kategoriya qo`shish</h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-white">Firma nomi</label>
+                        <label htmlFor="name" className="block text-sm font-medium text-white">Kategoriya nomi</label>
                         <input
                             type="text"
                             id="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
-                            placeholder="Firma nomini kiriting"
+                            className="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-green-500"
+                            placeholder="Kategoriya nomini kiriting"
                             required
                         />
                     </div>
 
                     <div className="mt-6">
-                        <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md transition duration-300 ease-in-out transform hover:scale-105">
-                            Firma Qo`shish
+                        <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-md transition duration-300 ease-in-out transform hover:scale-105">
+                            Kategoriya Qo`shish
                         </button>
                     </div>
                 </form>

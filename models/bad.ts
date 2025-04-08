@@ -7,7 +7,7 @@ interface BadType {
 	description: string;
 	image: string;
 	firm: string;
-	category: string;
+	category: string; // Categoryni id orqali bog'lash
 }
 
 const badSchema = new Schema<BadType>({
@@ -15,7 +15,11 @@ const badSchema = new Schema<BadType>({
 	description: { type: String, required: true },
 	image: { type: String, required: true },
 	firm: { type: String, required: true },
-	category: { type: String, required: true },
+	category: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Category',
+		required: true,
+	}, // Categoryni ObjectId orqali bog'lash
 });
 
 // MongoDB modelini yaratish

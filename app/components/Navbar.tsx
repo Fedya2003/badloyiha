@@ -6,10 +6,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ModeToggle from './modeToggle';
 import Mobile from './mobile';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/nextjs';
+import { Plus } from 'lucide-react';
 
 function Navbar() {
     const pathname = usePathname();
+    const { user } = useUser();
+
+    const isAdmin = user?.primaryEmailAddress?.emailAddress === 'nematovfirdavs970@gmail.com';
+
     return (
         <div className='h-[10vh] backdrop-blur-sm border-b fixed z-40 inset-0 bg-background'>
             <div className='container max-w-6xl mx-auto h-[10vh] w-full flex items-center justify-between'>
@@ -31,14 +36,25 @@ function Navbar() {
                         </Link>
                     ))}
                 </div>
+
                 <div className='flex items-center gap-4'>
-                    {/* <GlobalSearch /> */}
                     <ModeToggle />
                     <Mobile />
+
                     <SignedOut>
                         <SignInButton mode='modal' />
                     </SignedOut>
+
                     <SignedIn>
+                        {isAdmin && (
+                            <Link
+                                href="/add"
+                                className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition duration-300"
+                                title="Yangi BAD qo‘shish"
+                            >
+                                <Plus size={20} />
+                            </Link>
+                        )}
                         <UserButton />
                     </SignedIn>
                 </div>
