@@ -13,15 +13,15 @@ const categoriesData = [
 const getIcon = (icon: string) => {
     switch (icon) {
         case "sport":
-            return <Dumbbell size={48} />
+            return <Dumbbell size={98} />
         case "health":
-            return <Heart size={48} />
+            return <Heart size={98} />
         case "mineral":
-            return <Gem size={48} />
+            return <Gem size={98} />
         case "vitamin":
-            return <Droplet size={48} />
+            return <Droplet size={98} />
         case "children":
-            return <Baby size={48} />
+            return <Baby size={98} />
         default:
             return null
     }
@@ -35,9 +35,13 @@ export default function CategoriesPage() {
                 {categoriesData.map((category) => (
                     <Link key={category.id} href={`/categories/${category.id}`} passHref>
                         <div className="p-6 bg-blue-500 shadow-xl rounded-lg border border-gray-200">
-                            <div className="flex items-center mb-4">
-                                <span className="mr-4">{getIcon(category.icon)}</span>
-                                <h2 className="text-xl font-semibold text-white">{category.name}</h2>
+                            <div className="flex flex-col justify-center items-center">
+                                {/* Ikona 3/2 bo'shliqni egallaydi, vertikal tarzda */}
+                                <div className="mb-8">
+                                    {getIcon(category.icon)}
+                                </div>
+                                {/* Matn 3/1 bo'shliqni egallaydi */}
+                                <h2 className="text-xl font-semibold text-white text-center">{category.name}</h2>
                             </div>
                         </div>
                     </Link>

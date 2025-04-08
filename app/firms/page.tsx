@@ -1,42 +1,55 @@
+"use client"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 
 type Firm = {
-    id: string
+    _id: string
     name: string
     logo: string
     description: string
 }
 
-const firms: Firm[] = [
-    {
-        id: "1",
-        name: "Nature's Bounty",
-        logo: "/images/firms/natures-bounty.png",
-        description: "Amerikadagi mashhur sog‘lomlik mahsulotlari brendi.",
-    },
-    {
-        id: "2",
-        name: "Solgar",
-        logo: "/images/firms/solgar.png",
-        description: "Vitamin va qo‘shimchalarda 70 yillik tajriba.",
-    },
-    {
-        id: "3",
-        name: "Now Foods",
-        logo: "/images/firms/now-foods.png",
-        description: "Organik va tabiiy mahsulotlarga e’tibor beruvchi kompaniya.",
-    },
-]
-
 export default function FirmsPage() {
+    const [firms, setFirms] = useState<Firm[]>([])
+    const [loading, setLoading] = useState(true) // Loading holati
+
+    // Firmalarni API orqali olish
+    useEffect(() => {
+        const fetchFirms = async () => {
+            try {
+                const response = await fetch("/api/firm")
+                const data = await response.json()
+
+                if (Array.isArray(data)) {
+                    setFirms(data)
+                }
+            } catch (error) {
+                console.error("Firmalarni olishda xatolik:", error)
+            } finally {
+                setLoading(false) // Ma'lumotlar kelgandan keyin loading holatini o'chirish
+            }
+        }
+
+        fetchFirms()
+    }, [])
+
+    // Agar loading bo'lsa, loading spinnerni ko'rsatish
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="animate-spin rounded-full border-t-4 border-blue-500 w-16 h-16"></div> {/* Spinner */}
+            </div>
+        )
+    }
+
     return (
         <div className="container py-12">
             <h1 className="text-4xl font-bold text-center mb-8">Firmalar</h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {firms.map((firm) => (
-                    <Link key={firm.id} href={`/firms/${firm.id}`}>
+                    <Link key={firm._id} href={`/firms/${firm._id}`}>
                         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition">
                             <div className="w-full h-40 relative mb-4">
                                 <Image
