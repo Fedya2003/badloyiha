@@ -1,15 +1,17 @@
-"use client"
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";  // 'next/navigation' dan import qilish
-import { useSearchParams } from "next/navigation";  // query parametrlarini olish uchun
+// app/bads/[id]/page.tsx
+'use client'
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { BadType } from "@/models/bad";
-import Image from "next/image";  // next/image modulidan import qilish
+import Image from "next/image";
 
-export default function BadDetailPage() {
+export default function BadDetailPage({ params }: { params: { id: string } }) {
     const router = useRouter();
-    const searchParams = useSearchParams();  // Search paramsni olish
-    const id = searchParams.get("id");  // 'id' parametrini olish
+
+    // Unwrapping params using React.use()
+    const { id } = React.use(params);
+
     const [bad, setBad] = useState<BadType | null>(null);
 
     useEffect(() => {
@@ -51,8 +53,8 @@ export default function BadDetailPage() {
                     <Image
                         src={bad.image}
                         alt={bad.name}
-                        width={500}  // O'lchamlarni belgilash
-                        height={300}  // O'lchamlarni belgilash
+                        width={500} // O'lchamlarni belgilash
+                        height={300} // O'lchamlarni belgilash
                         className="w-full rounded-md"
                     />
                 </div>
@@ -80,3 +82,4 @@ export default function BadDetailPage() {
         </div>
     );
 }
+

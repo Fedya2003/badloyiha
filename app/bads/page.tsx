@@ -1,44 +1,26 @@
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import Link from "next/link"
-import Image from "next/image"
+// app/bads/page.tsx
 
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import Link from "next/link";
+import Image from "next/image";
+import connectToDatabase from "@/lib/mongodb";
+import Bad from "@/models/bad";
+
+// Bad turini yaratish
 type Bad = {
-    id: string
-    name: string
-    image: string
-    description: string
-    firm: string
-    category: string
-}
+    _id: string;
+    name: string;
+    image: string;
+    description: string;
+    firm: string;
+    category: string;
+};
 
-const bads: Bad[] = [
-    {
-        id: "bad1",
-        name: "Vitamin C 1000mg",
-        image: "/images/bads/vitamin-c.jpg",
-        description: "Immunitetni mustahkamlashga yordam beradi.",
-        firm: "Nature's Bounty",
-        category: "Vitaminlar",
-    },
-    {
-        id: "bad2",
-        name: "Omega-3 Fish Oil",
-        image: "/images/bads/omega-3.jpg",
-        description: "Yurak sog'ligini qo'llab-quvvatlaydi.",
-        firm: "Optimum Nutrition",
-        category: "Omega-3",
-    },
-    {
-        id: "bad3",
-        name: "Multivitamin",
-        image: "/images/bads/multivitamin.jpg",
-        description: "Kundalik vitamin va minerallarni ta'minlaydi.",
-        firm: "Centrum",
-        category: "Vitaminlar",
-    },
-]
+export default async function BadsPage() {
+    // MongoDB bilan ulanish va badlarni olish
+    await connectToDatabase();
+    const bads = await Bad.find({}).lean();
 
-export default function BadsPage() {
     return (
         <div className="container py-12">
             <h1 className="text-4xl font-bold text-center mb-8">BADlar</h1>
@@ -57,7 +39,7 @@ export default function BadsPage() {
                 </TableHeader>
                 <TableBody>
                     {bads.map((bad) => (
-                        <TableRow key={bad.id}>
+                        <TableRow key={bad?._id}>
                             <TableCell>
                                 <Image
                                     src={bad.image}
@@ -72,7 +54,7 @@ export default function BadsPage() {
                             <TableCell>{bad.firm}</TableCell>
                             <TableCell>{bad.category}</TableCell>
                             <TableCell className="text-right">
-                                <Link href={`/bads/${bad.id}`}>
+                                <Link href={`/bads/${bad._id}`}>
                                     Batafsil
                                 </Link>
                             </TableCell>
@@ -87,5 +69,5 @@ export default function BadsPage() {
                 </TableFooter>
             </Table>
         </div>
-    )
+    );
 }

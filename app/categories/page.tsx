@@ -3,11 +3,11 @@ import Link from 'next/link'
 import { Heart, Gem, Droplet, Dumbbell, Baby } from "lucide-react"
 
 const categoriesData = [
-    { name: "Sport", icon: "sport", id: "1" },
-    { name: "Sog'lik", icon: "health", id: "2" },
-    { name: "Mineral", icon: "mineral", id: "3" },
-    { name: "Vitamin", icon: "vitamin", id: "4" },
-    { name: "Bolalar", icon: "children", id: "5" },
+    { name: "Sport", icon: "sport", id: "sport" },
+    { name: "Sog'lik", icon: "health", id: "health" },
+    { name: "Mineral", icon: "mineral", id: "mineral" },
+    { name: "Vitamin", icon: "vitamin", id: "vitamin" },
+    { name: "Bolalar", icon: "children", id: "children" },
 ]
 
 const getIcon = (icon: string) => {

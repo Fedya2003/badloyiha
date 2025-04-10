@@ -1,12 +1,26 @@
+// lib/mongodb.ts
+
 import mongoose from 'mongoose';
 
-const connectToDatabase = async () => {
-	if (mongoose.connections[0].readyState) {
-		console.log('Already connected to the database');
-		return;
-	}
-	await mongoose.connect(process.env.MONGODB_URI!); // MONGODB_URI o'zgaruvchisini .env faylida belgilanganligini tekshiring
-	console.log('Connected to the database');
-};
+const MONGODB_URI = process.env.MONGODB_URI || '';
 
-export default connectToDatabase;
+if (!MONGODB_URI) {
+	throw new Error('MONGODB_URI muhit o‘zgaruvchisi topilmadi');
+}
+
+let isConnected = false;
+
+export default async function connectToDatabase() {
+	if (isConnected) return;
+
+	try {
+		await mongoose.connect(MONGODB_URI, {
+			// dbName: 'your-db-name', // istasangiz qo‘shing
+		});
+		isConnected = true;
+		console.log('MongoDB ulandi');
+	} catch (error) {
+		console.error('MongoDBga ulanishda xatolik:', error);
+		throw error;
+	}
+}

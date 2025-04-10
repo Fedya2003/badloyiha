@@ -43,7 +43,7 @@ export default function AddBadPage() {
                 setCategory('')
 
                 // Sahifani yangilash
-                router.push('add/bad') // BADlar ro'yxatiga qaytish
+                router.push('/bad') // BADlar ro'yxatiga qaytish
             } else {
                 toast.error('Nimadir noto\'g\'ri ketdi. Iltimos, qaytadan urinib ko\'ring.')
             }
