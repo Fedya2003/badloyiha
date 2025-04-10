@@ -7,6 +7,7 @@ export interface BadType extends Document {
 	image: string;
 	firm: string;
 	category: string;
+	favourite: boolean;
 }
 
 // Schema yaratish
@@ -17,6 +18,7 @@ const badSchema: Schema<BadType> = new mongoose.Schema(
 		image: { type: String, required: true },
 		firm: { type: String, required: true },
 		category: { type: String, required: true },
+		favourite: { type: Boolean, require: false },
 	},
 	{ timestamps: true } // Yaratish va yangilanish vaqtlarini qo'shish
 );

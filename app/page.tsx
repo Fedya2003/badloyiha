@@ -1,22 +1,39 @@
 "use client"
-import React from "react"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import CarouselDApiDemo from "./components/Slider"
 import SearchBar from "./components/SearchBar"
 
 export default function Home() {
   const [totalBads, setTotalBads] = useState(0)  // Sayt statistikasi uchun BADlar soni
   const [siteVisitors, setSiteVisitors] = useState(0)  // Saytga tashrif buyurganlar soni
+  const [favouriteBads, setFavouriteBads] = useState([])  // Favourites bo‘yicha BADlar
 
   useEffect(() => {
-    // Dinamik statistika olish (masalan, API orqali)
-    setTotalBads(100)  // Misol uchun, 100 BAD mavjud
-    setSiteVisitors(5000)  // Misol uchun, 5000 foydalanuvchi
+    // Saytga tashrif buyurganlar va BADlar sonini olish
+    const fetchData = async () => {
+      const res = await fetch("/api/stats")
+      const data = await res.json()
+
+      setTotalBads(data.totalBads)
+      setSiteVisitors(data.visitorsCount)
+    }
+
+    // Favourites bo‘yicha BADlarni olish
+    const fetchFavouriteBads = async () => {
+      const res = await fetch("/api/bads?favourite=true")
+      const data = await res.json()
+
+      setFavouriteBads(data)
+    }
+
+    fetchData()
+    fetchFavouriteBads()
   }, [])
 
   return (
     <div>
       <SearchBar />
+
       {/* "BAD nima?" degan savol va javob */}
       <div className="hero-section bg-blue-500 text-white p-12 text-center">
         <h1 className="text-4xl font-bold mb-4">BAD nima?</h1>
@@ -28,7 +45,7 @@ export default function Home() {
       {/* Mashhur BADlar uchun slide ko'rinishi */}
       <section className="my-12">
         <h2 className="text-3xl font-bold text-center mb-6">Mashhur BADlar</h2>
-        <CarouselDApiDemo />
+        <CarouselDApiDemo favourite={favouriteBads} />
       </section>
 
       {/* Sayt statistikasi */}
@@ -49,7 +66,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
     </div>
   )
 }

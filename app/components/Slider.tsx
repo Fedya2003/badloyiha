@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import {
     Carousel,
@@ -7,18 +10,41 @@ import {
     CarouselPrevious,
     type CarouselApi,
 } from "@/components/ui/carousel"
-import Image from "next/image" // next/image import qilish
-import React from "react"
+import Image from "next/image"
 
-function CarouselDApiDemo() {
-    const [api, setApi] = React.useState<CarouselApi>()
-    const [current, setCurrent] = React.useState(0)
-    const [count, setCount] = React.useState(0)
+const defaultBAD = [
+    {
+        name: "Vitamin D3",
+        company: "Now",
+        description: "Suyaklar va immunitet uchun foydali quyosh vitamini.",
+        image: "/images/default-d3.jpg", // `public/images/` papkasida rasm bo‘lishi kerak
+    },
+]
 
-    React.useEffect(() => {
-        if (!api) {
-            return
+export default function CarouselDApiDemo() {
+    const [api, setApi] = useState<CarouselApi>()
+    const [current, setCurrent] = useState(0)
+    const [count, setCount] = useState(0)
+    const [bads, setBads] = useState(defaultBAD)
+
+    useEffect(() => {
+        const fetchFavourites = async () => {
+            try {
+                const res = await fetch("/api/favourite-bads")
+                const data = await res.json()
+                if (data.length > 0) {
+                    setBads(data)
+                }
+            } catch (err) {
+                console.error("Slayder uchun ma'lumotlarni olishda xatolik:", err)
+            }
         }
+
+        fetchFavourites()
+    }, [])
+
+    useEffect(() => {
+        if (!api) return
 
         setCount(api.scrollSnapList().length)
         setCurrent(api.selectedScrollSnap() + 1)
@@ -29,21 +55,23 @@ function CarouselDApiDemo() {
     }, [api])
 
     return (
-        <div className="mx-auto max-w-xs">
-            <Carousel setApi={setApi} className="w-full max-w-xs">
+        <div className="mx-auto w-full max-w-md">
+            <Carousel setApi={setApi} className="w-full">
                 <CarouselContent>
-                    {Array.from({ length: 3 }).map((_, index) => (
+                    {bads.map((bad, index) => (
                         <CarouselItem key={index}>
                             <Card>
-                                <CardContent className="flex aspect-square items-center justify-center p-6">
-                                    {/* Image komponentidan foydalanish */}
+                                <CardContent className="flex flex-col items-center justify-center p-4">
                                     <Image
-                                        src={`/images/bad${index + 1}.jpg`} // Rasm manzilini to'g'ri qo'ying
-                                        alt={`Image ${index + 1}`}
-                                        width={500}  // O'lchamni o'zgartirish
-                                        height={500} // O'lchamni o'zgartirish
-                                        className="rounded-lg object-cover"
+                                        src={bad.image || "/images/default-d3.jpg"}
+                                        alt={bad.name}
+                                        width={300}
+                                        height={300}
+                                        className="rounded-lg object-cover mb-4"
                                     />
+                                    <h3 className="text-lg font-bold">{bad.name}</h3>
+                                    <p className="text-sm text-gray-500">{bad.company}</p>
+                                    <p className="text-sm text-center mt-2">{bad.description}</p>
                                 </CardContent>
                             </Card>
                         </CarouselItem>
@@ -58,5 +86,3 @@ function CarouselDApiDemo() {
         </div>
     )
 }
-
-export default CarouselDApiDemo
